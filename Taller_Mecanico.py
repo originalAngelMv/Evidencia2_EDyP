@@ -30,6 +30,7 @@ try:
             detalle_lista = ast.literal_eval(detalle_str)
             
             notas[int(folio)] =[fecha,cliente,rfc,correo,detalle_lista,float(monto),ast.literal_eval(estado)]
+            print("El archivo CSV si existe. Se han cargado los datos\n")
 except FileNotFoundError:
     print("\nEl archivo CSV no existe. No se han cargado notas previas ")
 
@@ -248,26 +249,25 @@ while True:
                             print("CARÁCTER NO VALIDO. SOLO DÍGITOS NUMÉRICOS.")
                             continue
                         else:
+                            if folio_consulta in notas and notas[folio_consulta][6]==True:
+                                print("\n**************************")
+                                print("         NOTA")
+                                print("**************************")
+                                print(f"Folio: {folio_consulta:04}")
+                                print(f"Fecha de la nota: {notas[folio_consulta][0].strftime('%d-%m-%Y')}")
+                                print(f"Cliente: {notas[folio_consulta][1]}")
+                                print(f"RFC: {notas[folio_consulta][2]}")
+                                print(f"Correo electrónico: {notas[folio_consulta][3]}")
+                                print("\nDetalles de los servicios:")
+                                for servicio, costo in notas[folio_consulta][4]:
+                                    print(f"  - {servicio:<20}: ${costo:.2f}")
+                                print("------------------------------")
+                                print(f"Monto total:          ${notas[folio_consulta][5]:.2f}")
+                                print("**************************")
+                            else:
+                                print("NOTA NO ENCONTRADA EN EL SISTEMA.")
+                                continue
                             break
-                    
-                    if folio_consulta in notas and notas[folio_consulta][6]==True:
-                        print("\n**************************")
-                        print("         NOTA")
-                        print("**************************")
-                        print(f"Folio: {folio_consulta:04}")
-                        print(f"Fecha de la nota: {notas[folio_consulta][0].strftime('%d-%m-%Y')}")
-                        print(f"Cliente: {notas[folio_consulta][1]}")
-                        print(f"RFC: {notas[folio_consulta][2]}")
-                        print(f"Correo electrónico: {notas[folio_consulta][3]}")
-                        print("\nDetalles de los servicios:")
-                        for servicio, costo in notas[folio_consulta][4]:
-                            print(f"  - {servicio:<20}: ${costo:.2f}")
-                        print("------------------------------")
-                        print(f"Monto total:          ${notas[folio_consulta][5]:.2f}")
-                        print("**************************")
-                    else:
-                        print("NOTA NO ENCONTRADA EN EL SISTEMA.")
-                        
             elif opcion_consulta=="3":
                 
                 rfc_folio_list = []
@@ -403,7 +403,7 @@ while True:
                                 "OPCIÓN NO VALIDA.INTENTE NUEVAMENTE."     
                     else:
                         print("NOTA NO ENCONTRADA EN EL SISTEMA.")
-                        break
+                        continue
                     break
             else:
                 print("OPCIÓN NO VALIDA.INTENTE NUEVAMENTE.")
