@@ -489,7 +489,7 @@ while True:
                 correo = nota[5]
                 monto = nota[5]
                 
-                cliente = clienteljust(23)
+                cliente = cliente.ljust(23)
                 rfc = rfc.ljust(15)
                 correo = correo.ljust(30)
                 
