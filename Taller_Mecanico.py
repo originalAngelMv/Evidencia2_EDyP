@@ -30,7 +30,7 @@ try:
             detalle_lista = ast.literal_eval(detalle_str)
             
             notas[int(folio)] =[fecha,cliente,rfc,correo,detalle_lista,float(monto),ast.literal_eval(estado)]
-            print("El archivo CSV si existe. Se han cargado los datos\n")
+    print("El archivo CSV si existe. Se han cargado los datos\n")
 except FileNotFoundError:
     print("\nEl archivo CSV no existe. No se han cargado notas previas ")
 
@@ -215,8 +215,6 @@ while True:
                         continue
                     else:
                         break
-                
-                # Encabezado de la tabla
                 print(f"\n{'Folio':<10}| {'Fecha':<12}| {'Cliente':<20}| {'RFC':<15}| {'Correo':<30}| {'Monto':<10}")
                 contador_notas_en_periodo = 0
 
@@ -224,13 +222,14 @@ while True:
                     if fecha_inicial <= nota[0] <= fecha_final and nota[6]:
                         contador_notas_en_periodo += 1
                         fecha=nota[0]
-                        cliente=nota[1]
+                        cliente = nota[1][:17] + '...' if len(nota[1]) > 20 else nota[1]
                         rfc=nota[2]
-                        correo=nota[3]
+                        correo = nota[3][:25] + '...' if len(nota[3]) > 25 else nota[3]
                         monto=nota[5]
+                        cliente =cliente.ljust(20)
+                        correo = correo.ljust(30)
                         print(f"{folio:<10}| {fecha.strftime('%d-%m-%Y'):<12}| {cliente:<20}| {rfc:<15}| {correo:<30}| ${monto:>10.2f}")
                         print("-"*90)
-
                 if contador_notas_en_periodo == 0:
                     print("\nNO SE ENCONTRARON NOTAS EN EL PERÍODO ESPECIFICADO.")
                 else:
@@ -478,23 +477,20 @@ while True:
         if not encontradas_canceladas:
             print("\nNO SE ENCONTRARON NOTAS EN EL SISTEMA.\n")
             continue
-        print("Folio   |   Fecha        |   Cliente              |   RFC          |   Correo                        |   Monto")
+        print(f"\n{'Folio':<10}| {'Fecha':<12}| {'Cliente':<20}| {'RFC':<15}| {'Correo':<30}| {'Monto':<10}")
         print("-" * 100)
 
         for folio, nota in notas.items():
             if nota[6]==False:
-                fecha = nota[0].strftime('%d-%m-%Y')
-                cliente = nota[1]
-                rfc = nota[2]
-                correo = nota[5]
-                monto = nota[5]
-                
-                cliente = cliente.ljust(23)
-                rfc = rfc.ljust(15)
-                correo = correo.ljust(30)
-                
-                print(f"{folio:<7} |   {fecha:<12} |   {cliente} |   {rfc} |   {correo} |   ${monto:.2f}")
-
+                        fecha=nota[0]
+                        cliente = nota[1][:17] + '...' if len(nota[1]) > 20 else nota[1]
+                        rfc=nota[2]
+                        correo = nota[3][:25] + '...' if len(nota[3]) > 25 else nota[3]
+                        monto=nota[5]
+                        cliente =cliente.ljust(20)
+                        correo = correo.ljust(30)
+                        print(f"{folio:<10}| {fecha.strftime('%d-%m-%Y'):<12}| {cliente:<20}| {rfc:<15}| {correo:<30}| ${monto:>10.2f}")
+                        print("-"*90)
         while True:
 
             folio_rescate = input("\nNota a recuperar(Indique número de folio)/0 para volver al menú principal:\n ").strip()
@@ -557,16 +553,17 @@ while True:
         
 nombre_archivo = "notas.csv"
 try:
-    with open(nombre_archivo,"w",newline='') as archivo_csv:
+    with open(nombre_archivo, 'w', newline='') as archivo_csv:
         escritor = csv.writer(archivo_csv)
+        escritor.writerow(["Folio", "Fecha", "Cliente", "RFC", "Correo", "Detalle","Monto","Estado"])
         for folio, datos in notas.items():
             fecha,cliente,rfc,correo,detalle,monto,estado = datos
             fecha_str = fecha.strftime('%d-%m-%Y')
             estado_str = estado
             escritor.writerow([folio,fecha_str,cliente,rfc,correo,detalle,monto,estado_str])
-    print(f"Se han guardado los datos en {nombre_archivo}")
+    print(f'Se han guardado los datos en {nombre_archivo}')
 except Exception as e:
-    print(f"ERROR AL GUARDAR LOS DATOS EN EL ARCHIVO CSV: {e}")
+    print(f'Error al guardar los datos en el archivo CSV: {e}')
         
         
             
