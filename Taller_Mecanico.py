@@ -97,26 +97,29 @@ while True:
                 break
         
         while True:
-            rfc_ingresado = input("\nIngrese un RFC (por ejemplo: XEXT990101NI4): ").strip().upper()
+            rfc_ingresado = input("\nIngrese un RFC (por ejemplo: Persona física: XEXT990101NI4 /Persona moral: EXT990101NI4 ): ").strip().upper()
             
             if not rfc_ingresado:
                 print("EL DATO NO PUEDE OMITIRSE. INTENTE DENUEVO.")
-            elif not re.match(r'^[A-Z]{4}[0-9]{6}[A-Z0-9]{3}$', rfc_ingresado):
+            elif not re.match(r'^[A-Z]{3,4}[0-9]{6}[A-Z0-9]{3}$', rfc_ingresado):
                 print("EL RFC INGRESADO NO TIENE EL FORMATO CORRECTO. INTENTE NUEVAMENTE.")
             else:
                 try:
-                    fecha_rfc = datetime.datetime.strptime(rfc_ingresado[4:10], '%y%m%d')
-                    break
+                    if len(rfc_ingresado) == 13:
+                        fecha_rfc = datetime.datetime.strptime(rfc_ingresado[4:10], '%y%m%d')
+                    elif len(rfc_ingresado) == 12:
+                        fecha_rfc = datetime.datetime.strptime(rfc_ingresado[3:9], '%y%m%d')
                 except ValueError:
                     print("LA FECHA EN EL RFC NO ES VÁLIDA. INTENTE NUEVAMENTE.")
-        
+                    continue
+                break
         while True:
             correo = input("\nIngrese su correo electrónico gmail (por ejemplo: correo123@gmail.com): ").strip()
 
             if not correo:
                 print("EL DATO NO PUEDE OMITIRSE. INTENTE DENUEVO.")
-            elif not correo.endswith('@gmail.com'):
-                print("EL CORREO ELECTRÓNICO DEBE SER DE DOMINIO 'gmail.com'. INTENTE NUEVAMENTE")  
+            elif not re.match(r'^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', correo):
+                print("EL CORREO ELECTRÓNICO DEBE TIENE UN FORMATO INCORRECTO. INTENTE NUEVAMENTE")  
             else:
                 break
         
