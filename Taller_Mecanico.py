@@ -114,12 +114,12 @@ while True:
                     continue
                 break
         while True:
-            correo = input("\nIngrese su correo electrónico gmail (por ejemplo: correo123@gmail.com): ").strip()
+            correo = input("\nIngrese su correo electrónico : ").strip()
 
             if not correo:
                 print("EL DATO NO PUEDE OMITIRSE. INTENTE DENUEVO.")
             elif not re.match(r'^[a-zA-Z0-9._+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', correo):
-                print("EL CORREO ELECTRÓNICO DEBE TIENE UN FORMATO INCORRECTO. INTENTE NUEVAMENTE")  
+                print("EL CORREO ELECTRÓNICO TIENE UN FORMATO INCORRECTO/NO EXISTE. INTENTE NUEVAMENTE")  
             else:
                 break
         
