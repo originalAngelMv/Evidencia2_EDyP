@@ -4,12 +4,6 @@ import csv
 import ast
 import openpyxl
 
-def contiene_digitos(nombre):
-    for caracter in nombre:
-        if caracter.isdigit():
-            return True
-    return False
-
 notas = dict()
 
 try:
